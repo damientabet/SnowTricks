@@ -25,6 +25,9 @@
                 </li>
             {% else %}
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ path('profile') }}">Profile</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ path('logout') }}">Logout</a>
                 </li>
             {% endif %}
