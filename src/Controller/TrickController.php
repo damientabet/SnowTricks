@@ -29,6 +29,7 @@ class TrickController extends AbstractController
     /**
      * @Route("trick/{id}-{slug}", name="trick.show", requirements={"slug": "[a-z0-9\-]*" })
      * @param Trick $trick
+     * @param string $slug
      * @return Response
      */
     public function show(Trick $trick, string $slug)
@@ -41,6 +42,36 @@ class TrickController extends AbstractController
         }
         return $this->render('trick/show.html.twig', [
             'trick' => $trick
+        ]);
+    }
+
+    /**
+     * @Route("trick/add", name="trick.add")
+     * @param Request $request
+     * @return RedirectResponse|Response
+     * @throws \Exception
+     */
+    public function add(Request $request)
+    {
+        $trick = new Trick();
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $trick->setCreatedAt(new \DateTime());
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            // do anything else you need here, like send an email
+            $this->addFlash('success', 'Figure bien ajouté');
+
+            return $this->redirectToRoute('profile');
+        }
+
+        return $this->render('trick/add.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

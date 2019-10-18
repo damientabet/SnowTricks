@@ -3,6 +3,13 @@
 {% block body %}
     <div class="container">
         <h1>Page de profil</h1>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         <ul>
             <li><a href="{{ path('trick.index') }}">Les figures</a></li>
             <li><a href="{{ path('trick.add') }}">Ajouter les figures</a></li>
