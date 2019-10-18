@@ -103,4 +103,18 @@ class TrickController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("trick/delete/{id}", name="trick.delete")
+     * @param Trick $trick
+     * @return RedirectResponse
+     */
+    public function delete(Trick $trick)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($trick);
+        $entityManager->flush();
+        $this->addFlash('success', 'Figure N°'.$trick->getId().' à été supprimé');
+        return $this->redirectToRoute('trick.index');
+    }
 }
