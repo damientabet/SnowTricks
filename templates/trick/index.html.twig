@@ -18,6 +18,7 @@
                 <th scope="row">{{ trick.id }}</th>
                 <td>{{ trick.name }}</td>
                 <td>{{ trick.description }}</td>
+                <td><a href="{{ path('trick.show', {'id': trick.id, slug: trick.slug}) }}" class="btn btn-secondary">Show</a></td>
             </tr>
             {% endfor %}
             </tbody>
