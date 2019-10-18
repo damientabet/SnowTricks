@@ -4,15 +4,17 @@
 
 {% block body %}
     <div class="container">
-        <h1>Register</h1>
+        <div class="col-md-6 m-auto text-center border p-5">
+            <h1>Register</h1>
+            {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.username) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword) }}
+            {{ form_row(registrationForm.agreeTerms) }}
 
-        {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button class="btn btn-primary">Register</button>
-        {{ form_end(registrationForm) }}
+            <button class="btn btn-primary">Register</button>
+            {{ form_end(registrationForm) }}
+            <a href="{{ path('login') }}">Already an account ?</a>
+        </div>
     </div>
 {% endblock %}
