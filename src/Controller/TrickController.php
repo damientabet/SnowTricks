@@ -74,4 +74,33 @@ class TrickController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("trick/edit/{id}", name="trick.edit")
+     * @param Trick $trick
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Trick $trick, Request $request)
+    {
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            // do anything else you need here, like send an email
+            $this->addFlash('success', 'Figure N°'.$trick->getId().' modifiée');
+
+            return $this->redirectToRoute('profile');
+        }
+
+        return $this->render('trick/edit.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView()
+        ]);
+    }
 }
