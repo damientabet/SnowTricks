@@ -4,5 +4,7 @@
     <div class="container">
         <h1>{{ trick.name }}</h1>
         <p>{{ trick.description }}</p>
+        <p>{{ trick.createdAt|date("Y-m-d") }}</p>
+        <p>{{ trick.idTrickGroup.name }}</p>
     </div>
 {% endblock %}

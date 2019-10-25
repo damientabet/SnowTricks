@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Trick;
+use App\Entity\TrickGroup;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,13 +24,17 @@ class TrickType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Description'
             ])
-            ->add('trick_group', ChoiceType::class, [
+            ->add('id_trick_group', EntityType::class, [
                 'label' => 'Groupe',
-                'choices' => [
-                    'Test 1' => 'Test 1',
-                    'Test 2' => 'Test 2',
-                    'Test 3' => 'Test 3'
-                ]
+                'class' => TrickGroup::class,
+                'choice_label' => function (TrickGroup $trickGroup) {
+                    return $trickGroup->getName();
+                },
+                'placeholder' => 'Choose group'
+            ])
+            ->add('active', CheckboxType::class, [
+                'label' => 'Publier',
+                'required' => false
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Ajouter'

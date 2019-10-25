@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Front;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +13,6 @@ class UserController extends AbstractController
      */
     public function index()
     {
-        return $this->render('user/my-profile.html.twig');
+        return $this->render('front/user/my-profile.html.twig');
     }
 }

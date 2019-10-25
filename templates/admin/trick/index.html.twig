@@ -9,6 +9,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
+                <th scope="col">Group</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Updated At</th>
+                <th scope="col">Active</th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
@@ -18,9 +22,15 @@
                 <th scope="row">{{ trick.id }}</th>
                 <td>{{ trick.name }}</td>
                 <td>{{ trick.description }}</td>
-                <td><a href="{{ path('trick.show', {'id': trick.id, slug: trick.slug}) }}" class="btn btn-secondary">Show</a>
+                <td>{{ trick.idTrickGroup.name}}</td>
+                <td>{{ trick.createdAt|date('Y-m-d') }}</td>
+                <td>{{ trick.updatedAt|date('Y-m-d') }}</td>
+                <td>{{ trick.active }}</td>
+                <td>
+                    <a href="{{ path('trick.show', {'id': trick.id, slug: trick.slug}) }}" class="btn btn-secondary">Show</a>
                     <a href="{{ path('trick.edit', {'id': trick.id}) }}" class="btn btn-primary">Edit</a>
-                    <a href="{{ path('trick.delete', {'id': trick.id}) }}" class="btn btn-danger">Delete</a></td>
+                    <a href="{{ path('trick.delete', {'id': trick.id}) }}" class="btn btn-danger">Delete</a>
+                </td>
             </tr>
             {% endfor %}
             </tbody>
