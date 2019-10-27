@@ -7,15 +7,17 @@
         {% else %}
             <h1>Bienvenue sur la page d'accueil</h1>
         {% endif %}
-        <div>
+        <div class="row">
             {% for trick in tricks %}
-                <a href="{{ path('trick.show', {'id': trick.id, 'slug': trick.slug}) }}">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ trick.name }}</h5>
+                <div class="col-md-3 ml-3">
+                    <a href="{{ path('trick.show', {'id': trick.id, 'slug': trick.slug}) }}">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ trick.name }}</h5>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             {% endfor %}
         </div>
     </div>
