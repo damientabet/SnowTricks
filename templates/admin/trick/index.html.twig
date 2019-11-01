@@ -29,7 +29,8 @@
                 <td>
                     <a href="{{ path('trick.show', {'id': trick.id, slug: trick.slug}) }}" class="btn btn-secondary">Show</a>
                     <a href="{{ path('trick.edit', {'id': trick.id}) }}" class="btn btn-primary">Edit</a>
-                    <a href="{{ path('trick.delete', {'id': trick.id}) }}" class="btn btn-danger">Delete</a>
+                    <a href="{{ path('trick.delete', {'id': trick.id}) }}" class="btn btn-danger"
+                       onclick="if(confirm('If you delete this group, you delete all videos. Are you sure ? ')) {return true;} else {return false}">Delete</a>
                 </td>
             </tr>
             {% endfor %}

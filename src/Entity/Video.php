@@ -36,6 +36,16 @@ class Video
      */
     private $active;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $url;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +95,30 @@ class Video
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -4,7 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Trick;
 //use App\Entity\User;
+use App\Entity\Video;
 use App\Form\TrickType;
+use App\Form\VideoType;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,12 +77,16 @@ class AdminTrickController extends AbstractController
      * @Route("admin/trick/edit/{id}", name="trick.edit")
      * @param Trick $trick
      * @param Request $request
-     * @return Response
+     * @return RedirectResponse|Response
+     * @throws \Exception
      */
-    public function edit(Trick $trick,  Request $request)
+    public function edit(Trick $trick, Request $request)
     {
+        $video = new Video();
         $form = $this->createForm(TrickType::class, $trick);
+        $form_video = $this->createForm(VideoType::class, $video);
         $form->handleRequest($request);
+        $form_video->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -91,12 +97,29 @@ class AdminTrickController extends AbstractController
             // do anything else you need here, like send an email
             $this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
 
-            return $this->redirectToRoute('profile');
+            return $this->redirectToRoute('trick.edit', ['id' => $trick->getId()]);
+        }
+
+        if ($form_video->isSubmitted() && $form_video->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $video->setIdTrick($trick);
+            $video->setCreatedAt(new \DateTime());
+
+            $entityManager->persist($video);
+            $entityManager->flush();
+
+            // do anything else you need here, like send an email
+            //$this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
+
+            return $this->redirectToRoute('trick.edit', ['id' => $trick->getId()]);
         }
 
         return $this->render('admin/trick/edit.html.twig', [
             'trick' => $trick,
-            'form' => $form->createView()
+            'videos' => $trick->getVideos(),
+            'form' => $form->createView(),
+            'form_video' => $form_video->createView(),
         ]);
     }
 
@@ -108,6 +131,11 @@ class AdminTrickController extends AbstractController
     public function delete(Trick $trick)
     {
         $entityManager = $this->getDoctrine()->getManager();
+
+        foreach ($trick->getVideos() as $video) {
+            $entityManager->remove($video);
+        }
+
         $entityManager->remove($trick);
         $entityManager->flush();
         $this->addFlash('success', 'Figure N°' . $trick->getId() . ' à été supprimé');

@@ -2,10 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Trick;
 use App\Entity\TrickGroup;
 use App\Form\TrickGroupType;
-use App\Form\TrickType;
 use App\Repository\TrickGroupRepository;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +17,7 @@ class AdminTrickGroupController extends AbstractController
     /**
      * @Route("admin/trick-groups", name="trickGroup.index")
      * @param TrickGroupRepository $trickGroupRepository
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function index(TrickGroupRepository $trickGroupRepository)
     {

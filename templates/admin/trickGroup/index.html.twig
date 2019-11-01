@@ -24,7 +24,8 @@
                     <td>{{ trickGroup.updatedAt|date('Y-m-d') }}</td>
                     <td>
                         <a href="{{ path('trickGroup.edit', {'id': trickGroup.id}) }}" class="btn btn-primary">Edit</a>
-                        <a href="{{ path('trickGroup.delete', {'id': trickGroup.id}) }}" class="btn btn-danger" onclick="if (confirm('If you delete this group, you delete all tricks. Are you sure ? ')) {return true;} else {return false}">Delete</a>
+                        <a href="{{ path('trickGroup.delete', {'id': trickGroup.id}) }}" class="btn btn-danger"
+                           onclick="if (confirm('If you delete this group, you delete all tricks. Are you sure ? ')) {return true;} else {return false}">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
