@@ -23,8 +23,10 @@ class TrickController extends AbstractController
                 'slug' => $trick->getSlug(),
             ], 301);
         }
+        $form = $this->createForm(CommentType::class, $comment);
         return $this->render('front/trick/show.html.twig', [
             'trick' => $trick
+            'form' => $form->createView(),
         ]);
     }
 }
