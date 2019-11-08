@@ -36,6 +36,11 @@ class Image
      */
     private $active;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $main_img;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class Image
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getMainImg(): ?bool
+    {
+        return $this->main_img;
+    }
+
+    public function setMainImg(bool $main_img): self
+    {
+        $this->main_img = $main_img;
 
         return $this;
     }
