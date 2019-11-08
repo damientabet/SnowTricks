@@ -31,7 +31,12 @@
             {% endif %}
 
             {% for comment in comments %}
-                <p>{{ comment.content }}</p>
+                <p>
+                    {{ comment.content }}
+                    {% if app.user.id is defined and comment.idUser.id == app.user.id %}
+                        <a href="{{ path('comment.delete', {'id': comment.id}) }}">Delete</a>
+                    {% endif %}
+                </p>
             {% endfor %}
         </div>
     </div>
