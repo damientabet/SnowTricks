@@ -23,8 +23,13 @@
                 {% endif %}
             {% endfor %}
         </div>
+
         <div>
             {{ form(form) }}
+
+            {% for comment in comments %}
+                <p>{{ comment.content }}</p>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

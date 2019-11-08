@@ -27,6 +27,7 @@ class TrickController extends AbstractController
         return $this->render('front/trick/show.html.twig', [
             'trick' => $trick
             'form' => $form->createView(),
+            'comments' => $trick->getComments()
         ]);
     }
 }
