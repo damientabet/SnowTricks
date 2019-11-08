@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ trick.name }}</h1>
+        <p>{{ trick.description }}</p>
+        <p>{{ trick.createdAt|date("Y-m-d") }}</p>
+        <p>{{ trick.idTrickGroup.name }}</p>
+        {% for video in trick.getVideos().getValues() %}
+            <iframe width="420" height="200"
+                    src="{{ video.url }}">
+            </iframe>
+        {% endfor %}
+    </div>
+{% endblock %}

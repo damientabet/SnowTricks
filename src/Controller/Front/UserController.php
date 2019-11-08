@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Front;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController
+class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("my-profile", name="profile")
      * @return Response
      */
     public function index()
     {
-        return $this->render('index.html.twig');
+        return $this->render('front/user/my-profile.html.twig');
     }
 }

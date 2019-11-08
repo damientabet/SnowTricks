@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Front;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use Cassandra\Date;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setCreatedAt(new \DateTime());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -39,7 +41,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('front/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
