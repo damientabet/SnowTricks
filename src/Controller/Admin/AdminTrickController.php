@@ -67,7 +67,7 @@ class AdminTrickController extends AbstractController
             // do anything else you need here, like send an email
             $this->addFlash('success', 'Figure bien ajouté');
 
-            return $this->redirectToRoute('profile');
+            return $this->redirectToRoute('trick.edit', ['id' => $trick->getId()]);
         }
 
         return $this->render('admin/trick/add.html.twig', [
