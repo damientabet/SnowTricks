@@ -25,7 +25,10 @@
         </div>
 
         <div>
-            {{ form(form) }}
+            <h2>Commentaires</h2>
+            {% if app.user %}
+                {{ form(form) }}
+            {% endif %}
 
             {% for comment in comments %}
                 <p>{{ comment.content }}</p>
