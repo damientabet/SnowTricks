@@ -20,4 +20,4 @@
 
 public/images/
 .idea
-.env
+!/.env
