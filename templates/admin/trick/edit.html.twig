@@ -10,10 +10,8 @@
                     <a class="nav-link active" id="v-pills-informations-tab" data-toggle="pill"
                        href="#v-pills-informations" role="tab"
                        aria-controls="v-pills-informations" aria-selected="true">Informations</a>
-                    <a class="nav-link" id="v-pills-images-tab" data-toggle="pill" href="#v-pills-images" role="tab"
-                       aria-controls="v-pills-images" aria-selected="false">Images</a>
-                    <a class="nav-link" id="v-pills-videos-tab" data-toggle="pill" href="#v-pills-videos" role="tab"
-                       aria-controls="v-pills-videos" aria-selected="false">Vidéos</a>
+                    <a class="nav-link" href="{{ path('image.add', {'trick': trick.id}) }}">Images</a>
+                    <a class="nav-link"href="{{ path('video.add', {'trick': trick.id}) }}">Vidéos</a>
                 </div>
             </div>
             <div class="col-9">
@@ -24,11 +22,8 @@
                         {{ form_rest(form) }}
                         {{ form_end(form) }}
                     </div>
-                    {% include 'admin/trick/include/image.html.twig' %}
-                    {% include 'admin/trick/include/video.html.twig' %}
                 </div>
             </div>
         </div>
-    </div>
     </div>
 {% endblock %}

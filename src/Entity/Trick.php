@@ -173,29 +173,6 @@ class Trick
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setIdTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getIdTrick() === $this) {
-                $comment->setIdTrick(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Image[]
      */
@@ -204,58 +181,12 @@ class Trick
         return $this->images;
     }
 
-    public function addImage(Image $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setIdTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        if ($this->images->contains($image)) {
-            $this->images->removeElement($image);
-            // set the owning side to null (unless already changed)
-            if ($image->getIdTrick() === $this) {
-                $image->setIdTrick(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Video[]
      */
     public function getVideos(): Collection
     {
         return $this->videos;
-    }
-
-    public function addVideo(Video $video): self
-    {
-        if (!$this->videos->contains($video)) {
-            $this->videos[] = $video;
-            $video->setIdTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVideo(Video $video): self
-    {
-        if ($this->videos->contains($video)) {
-            $this->videos->removeElement($video);
-            // set the owning side to null (unless already changed)
-            if ($video->getIdTrick() === $this) {
-                $video->setIdTrick(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getSlug(): string
