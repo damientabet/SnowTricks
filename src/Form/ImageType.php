@@ -20,9 +20,11 @@ class ImageType extends AbstractType
                 'label' => 'Your files',
                 'multiple' => false
             ])
-            ->add('active', CheckboxType::class, [
-                'required' => false
+            ->add('main_img', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Main Image'
             ])
+            ->add('active', CheckboxType::class, ['required' => false])
             ->add('submit', SubmitType::class)
         ;
     }

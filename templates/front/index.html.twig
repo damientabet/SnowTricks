@@ -2,16 +2,16 @@
 
 {% block body %}
     <div class="container">
-        {% if app.user %}
-            <h1>Bonjour {{ app.user.username }}</h1>
-        {% else %}
-            <h1>Bienvenue sur la page d'accueil</h1>
-        {% endif %}
         <div class="row">
             {% for trick in tricks %}
                 <div class="col-md-3 ml-3">
                     <a href="{{ path('trick.show', {'id': trick.id, 'slug': trick.slug}) }}">
                         <div class="card" style="width: 18rem;">
+                            {% for image in trick.images %}
+                                {% if image.mainImg == 1 %}
+                                    <img src="/images/tricks/{{ image.name }}" class="card-img-top" alt="...">
+                                {% endif %}
+                            {% endfor %}
                             <div class="card-body">
                                 <h5 class="card-title">{{ trick.name }}</h5>
                             </div>

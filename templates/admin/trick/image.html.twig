@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <a class="btn btn-primary" href="{{ path('trick.edit', {'id': trickId}) }}">Retour</a>
+        {{ form(form_image) }}
+
+        <table class="col-md-12">
+            <tbody>
+            {% for image in images %}
+                <tr {% if image.mainImg %}class="table-active"{% endif %}>
+                    <td><img style="max-height: 200px" src="/images/tricks/{{ image.name }}" alt=""/></td>
+                    <td>
+                        <a href="{{ path('image.delete', {'id': image.id}) }}"
+                           class="btn btn-danger"
+                           onclick="if(confirm('Are you sure ?')) {return true;} else {return false}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
