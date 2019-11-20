@@ -16,13 +16,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ForgetController extends AbstractController
 {
-    public $app_token;
-
-    public function __construct($APP_SECRET_TOKEN)
-    {
-        $this->app_token = $APP_SECRET_TOKEN;
-    }
-
     /**
      * @Route("/forget-password", name="forget.passwd")
      * @param UserRepository $userRepository
@@ -83,7 +76,6 @@ class ForgetController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
-
             if ($data['password'] !== $data['password_confirm']) {
                 $this->addFlash('danger', 'Les champs ne sont pas identiques');
                 return $this->redirectToRoute('reset.passwd', [
@@ -97,7 +89,6 @@ class ForgetController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le mot de passe à bien été modifié');
-
             return $this->redirectToRoute('login');
         }
 
