@@ -72,17 +72,13 @@ class ForgetController extends AbstractController
 
         $form = $this->createForm(ResetPasswordType::class);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             if ($data['password'] !== $data['password_confirm']) {
                 $this->addFlash('danger', 'Les champs ne sont pas identiques');
-                return $this->redirectToRoute('reset.passwd', [
-                    'email' => $email,
-                    'username' => $username,
-                    'token' => $token
-                ]);
+                return $this->redirectToRoute('reset.passwd',
+                    ['email' => $email, 'username' => $username, 'token' => $token]);
             }
             $user->setPassword($passwordEncoder->encodePassword($user,$form->get('password')->getData()));
             $entityManager->persist($user);
