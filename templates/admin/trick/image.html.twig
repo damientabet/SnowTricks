@@ -2,6 +2,7 @@
 
 {% block body %}
     <div class="container">
+    {% include 'includes/flashMessage.html.twig' %}
         <a class="btn btn-primary" href="{{ path('trick.edit', {'id': trickId}) }}">Retour</a>
         {{ form(form_image) }}
 

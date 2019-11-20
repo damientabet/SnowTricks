@@ -44,8 +44,7 @@ class AdminImageController extends AbstractController
             $entityManager->persist($image);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-            //$this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
+            $this->addFlash('success', 'Image ajoutée');
 
             return $this->redirectToRoute('image.add', ['trick' => $trick->getId()]);
         }
@@ -74,7 +73,7 @@ class AdminImageController extends AbstractController
         }
         $entityManager->remove($image);
         $entityManager->flush();
-        //$this->addFlash('success', 'Figure N°' . $trick->getId() . ' à été supprimé');
-        return $this->redirectToRoute('trick.edit', ['id' => $id_trick]);
+        $this->addFlash('success', 'Image supprimée');
+        return $this->redirectToRoute('image.add', ['trick' => $id_trick]);
     }
 }

@@ -47,7 +47,7 @@ class ForgetController extends AbstractController
                     ->setBody($this->renderView('email/resetPassword.html.twig', [
                         'email' => $user->getEmail(),
                         'username' => $user->getPseudo(),
-                        'token' => $this->app_token
+                        'token' => $user->getSecureKey()
                     ]), 'text/html');
             $mailer->send($message);
 
@@ -61,8 +61,7 @@ class ForgetController extends AbstractController
     /**
      * @Route("reset-password/{email}/{username}/{token}", name="reset.passwd",
      *     requirements={
-     *     "email"="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$",
-     *     "token"="%APP_SECRET_TOKEN%"
+     *     "email"="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$"
      * })
      * @param string $email
      * @param string $username
@@ -74,6 +73,10 @@ class ForgetController extends AbstractController
      */
     public function resetPassword(string $email, string $username, string $token, User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        if ($token !== $user->getSecureKey()) {
+            return $this->redirectToRoute('login');
+        }
+
         $form = $this->createForm(ResetPasswordType::class);
         $form->handleRequest($request);
 

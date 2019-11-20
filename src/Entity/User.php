@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -21,6 +22,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
      */
     private $email;
 
@@ -42,6 +44,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=32)
+     * @Assert\NotBlank()
      */
     private $pseudo;
 
@@ -54,6 +57,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="id_user")
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $secure_key;
 
     public function __construct()
     {
@@ -177,5 +185,17 @@ class User implements UserInterface
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function getSecureKey(): ?string
+    {
+        return $this->secure_key;
+    }
+
+    public function setSecureKey(string $secure_key): self
+    {
+        $this->secure_key = $secure_key;
+
+        return $this;
     }
 }

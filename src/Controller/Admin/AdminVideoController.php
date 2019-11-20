@@ -36,8 +36,7 @@ class AdminVideoController extends AbstractController
             $entityManager->persist($video);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-            //$this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
+            $this->addFlash('success', 'Vidéo ajoutée');
 
             return $this->redirectToRoute('video.add', ['trick' => $trick->getId()]);
         }
@@ -61,7 +60,7 @@ class AdminVideoController extends AbstractController
 
         $entityManager->remove($video);
         $entityManager->flush();
-        //$this->addFlash('success', 'Figure N°' . $trick->getId() . ' à été supprimé');
+        $this->addFlash('success', 'Vidéo supprimée');
         return $this->redirectToRoute('trick.edit', ['id' => $id_trick]);
     }
 }

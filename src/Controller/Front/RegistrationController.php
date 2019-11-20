@@ -4,7 +4,7 @@ namespace App\Controller\Front;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use Cassandra\Date;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +15,10 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     * @throws Exception
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -23,22 +27,15 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            $user->setPassword($passwordEncoder->encodePassword($user, $form->get('plainPassword')->getData()));
             $user->setCreatedAt(new \DateTime());
+            $user->setSecureKey(bin2hex(random_bytes(16)));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('home');
+            $this->addFlash('success', 'Votre compte à été crée');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('front/registration/register.html.twig', [
