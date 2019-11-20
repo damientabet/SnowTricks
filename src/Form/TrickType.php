@@ -36,9 +36,7 @@ class TrickType extends AbstractType
                 'label' => 'Publier',
                 'required' => false
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Ajouter'
-            ]);
+            ->add('submit', SubmitType::class, ['label' => 'Ajouter']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

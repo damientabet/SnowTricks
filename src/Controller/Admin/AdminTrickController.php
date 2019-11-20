@@ -13,6 +13,7 @@ use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,7 +66,6 @@ class AdminTrickController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
             $this->addFlash('success', 'Figure bien ajouté');
 
             return $this->redirectToRoute('trick.edit', ['id' => $trick->getId()]);
@@ -94,7 +94,6 @@ class AdminTrickController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
             $this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
 
             return $this->redirectToRoute('trick.edit', ['id' => $trick->getId()]);
@@ -117,6 +116,16 @@ class AdminTrickController extends AbstractController
 
         foreach ($trick->getVideos() as $video) {
             $entityManager->remove($video);
+        }
+
+        foreach ($trick->getImages() as $image) {
+            $filesystem = new Filesystem();
+            $imagePath = 'images/tricks/'.$image->getName();
+
+            if ($filesystem->exists($imagePath)) {
+                $filesystem->remove($imagePath);
+            }
+            $entityManager->remove($image);
         }
 
         $entityManager->remove($trick);

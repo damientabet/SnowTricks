@@ -39,8 +39,7 @@ class CommentController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-            //$this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
+            $this->addFlash('success', 'Votre commentaire à été modifié');
 
             return $this->redirectToRoute('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
         }
@@ -65,6 +64,7 @@ class CommentController extends AbstractController
 
         $entityManager->remove($comment);
         $entityManager->flush();
+        $this->addFlash('success', 'Votre commentaire à été supprimé');
         return $this->redirectToRoute('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\TrickGroup;
 use App\Form\TrickGroupType;
 use App\Repository\TrickGroupRepository;
 use App\Repository\TrickRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class AdminTrickGroupController extends AbstractController
      * @Route("admin/trickGroup/add", name="trickGroup.add")
      * @param Request $request
      * @return RedirectResponse|Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function add(Request $request)
     {
@@ -64,7 +65,7 @@ class AdminTrickGroupController extends AbstractController
      * @param TrickGroup $trickGroup
      * @param Request $request
      * @return RedirectResponse|Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function edit(TrickGroup $trickGroup, Request $request)
     {

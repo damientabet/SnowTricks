@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Repository\UserRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,18 +19,16 @@ class TrickController extends AbstractController
 
     public function __construct(AuthenticationUtils $authenticationUtils, UserRepository $userRepository)
     {
-        $this->user = $userRepository->findOneBy([
-            'email' => $authenticationUtils->getLastUsername()
-        ]);
+        $this->user = $userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]);
     }
 
     /**
-     * @Route("trick/{id}-{slug}", name="trick.show", requirements={"slug": "[a-z0-9\-]*" })
+     * @Route("trick/{id}-{slug}", name="trick.show", requirements={"id": "[0-9]*", "slug": "[a-z0-9\-]*" })
      * @param Trick $trick
      * @param string $slug
      * @param Request $request
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function show(Trick $trick, string $slug, Request $request)
     {
@@ -53,9 +52,6 @@ class TrickController extends AbstractController
 
             $entityManager->persist($comment);
             $entityManager->flush();
-
-            // do anything else you need here, like send an email
-            //$this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
 
             return $this->redirectToRoute('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
         }
