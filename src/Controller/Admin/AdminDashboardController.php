@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Controller\Front;
+namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserController extends AbstractController
+class AdminDashboardController extends AbstractController
 {
     /**
-     * @Route("my-profile", name="profile")
+     * @Route("/admin", name="admin.dashboard")
      * @return Response
      */
     public function index()
     {
-        return $this->render('front/user/my-profile.html.twig');
+        return $this->render('admin/index.html.twig');
     }
 }

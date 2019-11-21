@@ -41,6 +41,5 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/my-profile, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/admin/*, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin/*, roles: ROLE_ADMIN }
         - { path: ^/comment/*, roles: IS_AUTHENTICATED_FULLY }
