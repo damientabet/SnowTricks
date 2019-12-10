@@ -1,44 +1,84 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        {% for image in trick.images %}
-            {% if image.mainImg == 1 and image.active == 1 %}
-                <img style="max-height: 200px" src="/images/tricks/{{ image.name }}" alt=""/>
-            {% endif %}
-        {% endfor %}
-        <h1>{{ trick.name }}</h1>
-        <p>{{ trick.description }}</p>
-        <p>{{ trick.createdAt|date("Y-m-d") }}</p>
-        <p>{{ trick.idTrickGroup.name }}</p>
-        {% for video in trick.videos %}
-            <iframe width="420" height="200"
-                    src="{{ video.url }}">
-            </iframe>
-        {% endfor %}
-        <div>
-            {% for image in trick.images %}
-                {% if image.mainImg == 0 and image.active == 1 %}
-                    <img style="max-height: 200px" src="/images/tricks/{{ image.name }}" alt=""/>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        <div>
-            <h2>Commentaires</h2>
-            {% if app.user %}
-                {{ form(form) }}
-            {% endif %}
-
-            {% for comment in comments %}
-                <p>
-                    {{ comment.content }}
-                    {% if app.user.id is defined and comment.idUser.id == app.user.id %}
-                        <a href="{{ path('comment.delete', {'id': comment.id}) }}">Delete</a>
-                        <a href="{{ path('comment.edit', {'id': comment.id}) }}">Edit</a>
+    {% for image in trick.images %}
+        {% if image.mainImg == 1 and image.active == 1 %}
+            <figure class="position-relative">
+                <img class="img-fluid" style="filter: brightness(50%);"
+                     src="/images/tricks/{{ image.name }}" alt=""/>
+                <figcaption>
+                    <h1 class="text-white position-absolute" style="top: 50%; left: 50%">{{ trick.name }}</h1>
+                </figcaption>
+            </figure>
+        {% endif %}
+    {% endfor %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 px-5 mt-2">
+                <h2 class="text-center">Les images</h2>
+                <hr/>
+                {% for image in trick.images %}
+                    {% if image.mainImg == 0 and image.active == 1 %}
+                        <div class="rounded-0 mb-3">
+                            <img class="img-fluid" src="/images/tricks/{{ image.name }}" alt=""/>
+                        </div>
                     {% endif %}
-                </p>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="col-md-6 p-3 shadow-lg">
+                {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <script>
+                        $(document).ready( function() {
+
+                            alert('Your Message');
+
+                        });
+                    </script>
+                {% endfor %}
+                {% endfor %}
+                {% include 'includes/flashMessage.html.twig' %}
+                <div class="p-3">
+                    <p>{{ trick.description }}</p>
+                </div>
+                <p class="text-center mt-3"><span class="badge badge-primary">{{ trick.createdAt|date("d/m/Y") }}</span>
+                    <span class="badge badge-primary">{{ trick.idTrickGroup.name }}</span></p>
+                <hr/>
+                <h2 class="p-4 bg-dark text-center text-white">Commentaires</h2>
+
+                {% if app.user %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form.content, {'attr': {'class': 'mb-3 rounded-0 p-2', 'placeholder': 'Votre commentaire ici...'}}) }}
+                    {{ form_widget(form.submit, {'attr': {'class': 'col-5 mb-3 p-3 rounded-0 p-2 btn btn-primary'}}) }}
+                    {{ form_end(form) }}
+                {% endif %}
+
+                {% for comment in comments %}
+                    <div class="mb-3 p-4 bg-light row">
+                        <div class="col-11">
+                            {{ comment.content }}
+                        </div>
+                        <div class="col-1">
+                            {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
+                                            class="fa fa-trash text-danger"></i></a>
+                                <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
+                                            class="fa fa-edit text-warning"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-3 px-5 mt-2">
+                <h2 class="text-center">Les vidéos</h2>
+                <hr/>
+                {% for video in trick.videos %}
+                    <div class="embed-responsive embed-responsive-21by9 mb-3 p-3">
+                        <iframe class="embed-responsive-item" src="{{ video.url }}"></iframe>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
+        <hr/>
     </div>
 {% endblock %}

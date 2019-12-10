@@ -59,12 +59,11 @@ class AdminImageController extends AbstractController
     /**
      * @Route("admin/trick/image/delete/{id}", name="image.delete")
      * @param Image $image
-     * @return RedirectResponse
+     * @return void
      */
     public function delete(Image $image)
     {
         $filesystem = new Filesystem();
-        $id_trick = $image->getIdTrick()->getId();
         $entityManager = $this->getDoctrine()->getManager();
         $imagePath = 'images/tricks/'.$image->getName();
 
@@ -74,6 +73,6 @@ class AdminImageController extends AbstractController
         $entityManager->remove($image);
         $entityManager->flush();
         $this->addFlash('success', 'Image supprimée');
-        return $this->redirectToRoute('image.add', ['trick' => $id_trick]);
+        die('ok');
     }
 }

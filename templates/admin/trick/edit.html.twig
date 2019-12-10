@@ -1,27 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        {% include 'includes/flashMessage.html.twig' %}
-        <h1>Édition de figure</h1>
-
-        <div class="row">
-            <div class="col-3">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-informations-tab" data-toggle="pill"
-                       href="#v-pills-informations" role="tab"
-                       aria-controls="v-pills-informations" aria-selected="true">Informations</a>
-                    <a class="nav-link" href="{{ path('image.add', {'trick': trick.id}) }}">Images</a>
-                    <a class="nav-link"href="{{ path('video.add', {'trick': trick.id}) }}">Vidéos</a>
-                </div>
+    <div class="row container-fluid" style="margin-top: 110px">
+        <div class="col-2">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action active" href="{{ path('trick.index') }}">Les
+                    figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trick.add') }}">Ajouter les figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trickGroup.index') }}">Les groupes de
+                    figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trickGroup.add') }}">Ajouter les
+                    groupes de
+                    figures</a>
             </div>
-            <div class="col-9">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-informations" role="tabpanel"
-                         aria-labelledby="v-pills-informations-tab">
-                        {{ form_start(form) }}
-                        {{ form_rest(form) }}
-                        {{ form_end(form) }}
+        </div>
+        <div class="col-10">
+            {% include 'includes/flashMessage.html.twig' %}
+            <h1>Édition de figure</h1>
+
+            <div class="row">
+                <div class="col-2">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link active" href="{{ path('trick.edit', {'id': trick.id}) }}">Informations</a>
+                        <a class="nav-link" href="{{ path('image.add', {'trick': trick.id}) }}">Images</a>
+                        <a class="nav-link" href="{{ path('video.add', {'trick': trick.id}) }}">Vidéos</a>
+                    </div>
+                </div>
+                <div class="col-10 shadow p-3">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-informations" role="tabpanel"
+                             aria-labelledby="v-pills-informations-tab">
+                            {{ form_start(form) }}
+                            {{ form_rest(form.name) }}
+                            {{ form_end(form) }}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -52,7 +52,7 @@ class AdminTrickGroupController extends AbstractController
             // do anything else you need here, like send an email
             $this->addFlash('success', 'Le groupe bien ajouté');
 
-            return $this->redirectToRoute('profile');
+            return $this->redirectToRoute('trickGroup.index');
         }
 
         return $this->render('admin/trickGroup/add.html.twig', [
@@ -95,7 +95,7 @@ class AdminTrickGroupController extends AbstractController
      * @Route("admin/trickGroup/delete/{id}", name="trickGroup.delete")
      * @param TrickGroup $trickGroup
      * @param TrickRepository $trickRepository
-     * @return RedirectResponse
+     * @return void
      */
     public function delete(TrickGroup $trickGroup, TrickRepository $trickRepository)
     {
@@ -110,6 +110,6 @@ class AdminTrickGroupController extends AbstractController
         $entityManager->remove($trickGroup);
         $entityManager->flush();
         $this->addFlash('success', 'Groupe N°' . $trickGroup->getId() . ' à été supprimé');
-        return $this->redirectToRoute('trickGroup.index');
+        die('ok');
     }
 }

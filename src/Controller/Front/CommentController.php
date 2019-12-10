@@ -25,10 +25,11 @@ class CommentController extends AbstractController
         $user = $this->getUser();
         $id_trick = $comment->getIdTrick();
         $trick = $trickRepository->findOneBy(['id' => $id_trick]);
+        $slug = $trick->getSlug();
 
-        if ($user->getId() !== $comment->getIdUser()->getId()) {
-            return $this->redirectToRoute('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
-        }
+        if ($user->getRoles()[0] !== 'ROLE_ADMIN')
+            if ($user->getId() !== $comment->getIdUser()->getId())
+                return $this->redirectToRoute('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
         
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
@@ -46,6 +47,8 @@ class CommentController extends AbstractController
 
         return $this->render('front/trick/comment/edit.html.twig', [
             'form' => $form->createView(),
+            'idTrick' => $id_trick,
+            'slug' => $slug
         ]);
     }
 

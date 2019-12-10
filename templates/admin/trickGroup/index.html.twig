@@ -1,35 +1,120 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <h1>Les groupes de figures</h1>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Created At</th>
-                <th scope="col">Updated At</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for trickGroup in trickGroups %}
-                <tr>
-                    <th scope="row">{{ trickGroup.id }}</th>
-                    <td>{{ trickGroup.name }}</td>
-                    <td>{{ trickGroup.description }}</td>
-                    <td>{{ trickGroup.createdAt|date('Y-m-d') }}</td>
-                    <td>{{ trickGroup.updatedAt|date('Y-m-d') }}</td>
-                    <td>
-                        <a href="{{ path('trickGroup.edit', {'id': trickGroup.id}) }}" class="btn btn-primary">Edit</a>
-                        <a href="{{ path('trickGroup.delete', {'id': trickGroup.id}) }}" class="btn btn-danger"
-                           onclick="if (confirm('If you delete this group, you delete all tricks. Are you sure ? ')) {return true;} else {return false}">Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="row container-fluid" style="margin-top: 110px">
+        <div class="col-2">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" href="{{ path('trick.index') }}">Les
+                    figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trick.add') }}">Ajouter les figures</a>
+                <a class="list-group-item list-group-item-action active" href="{{ path('trickGroup.index') }}">Les
+                    groupes de
+                    figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trickGroup.add') }}">Ajouter les
+                    groupes de figures</a>
+            </div>
+        </div>
+        <div id="reload" class="col-10">
+            <div id="trickGroup">
+                <h1>Les groupes de figures</h1>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Updated At</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for trickGroup in trickGroups %}
+                        <tr>
+                            <th scope="row">{{ trickGroup.id }}</th>
+                            <td>{{ trickGroup.name }}</td>
+                            <td>{{ trickGroup.description }}</td>
+                            <td>{{ trickGroup.createdAt|date('Y-m-d') }}</td>
+                            <td>{{ trickGroup.updatedAt|date('Y-m-d') }}</td>
+                            <td>
+                                <div class="d-flex">
+                                    <div class="btn-group">
+                                        <a href="{{ path('trickGroup.edit', {'id': trickGroup.id}) }}"
+                                           class="btn btn-default border"><i class="fa fa-edit"></i> Edit</a>
+                                        <button type="button"
+                                                class="btn btn-default dropdown-toggle dropdown-toggle-split border"
+                                                id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false" data-reference="parent">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuReference">
+                                            <button id="trickGroupDelete_{{ trickGroup.id }}" class="dropdown-item"
+                                                    data-url="{{ path('trickGroup.delete', {'id': trickGroup.id}) }}"><i
+                                                        class="fa fa-trash-alt"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('click', '[id^="trickGroupDelete_"]', function () {
+                console.log('test');
+                sweetAlert('confirm', 'Are you sure?', $(this).data('url'));
+            });
+
+            function sweetAlert(type, message, dataUrl = null) {
+                switch (type) {
+                    case 'success' :
+                        swal({
+                            title: message,
+                            text: 'C\'est bon !',
+                            icon: type,
+                            button: false,
+                            timer: 1000
+                        });
+                        break;
+                    case 'confirm' :
+                        swal({
+                            icon: "error",
+                            title: message,
+                            text: 'If you delete this group, you delete all tricks.',
+                            dangerMode: true,
+                            confirm: true,
+                            buttons: [
+                                'Cancel',
+                                'Delete'
+                            ]
+                        })
+                            .then(function (e) {
+                                if (e === true) {
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: dataUrl,
+                                        success: function (data) {
+                                            if (data === 'ok') {
+                                                sweetAlert('success', 'Groupe de tricks supprimé !');
+                                                $("#reload").load(" #trickGroup");
+                                            } else {
+                                                sweetAlert('danger', 'Une erreur est survenue !');
+                                            }
+                                        }
+                                    })
+                                }
+                            });
+                        break;
+                }
+            }
+        });
+    </script>
 {% endblock %}

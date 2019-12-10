@@ -1,8 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <h1>Création de figure</h1>
-        {{ form(form) }}
+    <div class="row container-fluid" style="margin-top: 110px">
+        <div class="col-2">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" href="{{ path('trick.index') }}">Les
+                    figures</a>
+                <a class="list-group-item list-group-item-action active" href="{{ path('trick.add') }}">Ajouter les figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trickGroup.index') }}">Les groupes de
+                    figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trickGroup.add') }}">Ajouter les
+                    groupes de
+                    figures</a>
+            </div>
+        </div>
+        <div class="col-10">
+            <h1>Création de figure</h1>
+            {{ form(form) }}
+        </div>
     </div>
 {% endblock %}

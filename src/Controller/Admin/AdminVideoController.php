@@ -51,16 +51,15 @@ class AdminVideoController extends AbstractController
     /**
      * @Route("admin/trick/video/delete/{id}", name="video.delete")
      * @param Video $video
-     * @return RedirectResponse
+     * @return void
      */
     public function delete(Video $video)
     {
-        $id_trick = $video->getIdTrick()->getId();
         $entityManager = $this->getDoctrine()->getManager();
 
         $entityManager->remove($video);
         $entityManager->flush();
         $this->addFlash('success', 'Vidéo supprimée');
-        return $this->redirectToRoute('trick.edit', ['id' => $id_trick]);
+        die('ok');
     }
 }

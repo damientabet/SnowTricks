@@ -1,25 +1,138 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container">
-    {% include 'includes/flashMessage.html.twig' %}
-    <a class="btn btn-primary" href="{{ path('trick.edit', {'id': trickId}) }}">Retour</a>
-    {{ form(form_video) }}
+    <div class="row container-fluid" style="margin-top: 110px">
+        <div class="col-2">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action active" href="{{ path('trick.index') }}">Les
+                    figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trick.add') }}">Ajouter les figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trickGroup.index') }}">Les
+                    groupes de
+                    figures</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('trickGroup.add') }}">Ajouter les
+                    groupes de
+                    figures</a>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="row">
+                <div class="col-2">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link" href="{{ path('trick.edit', {'id': trickId}) }}">Informations</a>
+                        <a class="nav-link" href="{{ path('image.add', {'trick': trickId}) }}">Images</a>
+                        <a class="nav-link active" href="{{ path('video.add', {'trick': trickId}) }}">Vidéos</a>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <h4 class="text-center">Ajouter une vidéo</h4>
+                    {{ form_start(form_video) }}
+                    {{ form_label(form_video.name) }}
+                    {{ form_widget(form_video.name) }}
+                    <div class="row mt-3">
+                        <div class="col">
+                            {{ form_label(form_video.url) }}
+                            {{ form_widget(form_video.url) }}
+                        </div>
+                        <div class="col">
+                            {{ form_label(form_video.type) }}
+                            {{ form_widget(form_video.type) }}
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        {{ form_widget(form_video.active) }}
+                    </div>
+                    <div class="text-center">
+                        {{ form_widget(form_video.submit, {'attr': {'class': 'btn btn-outline-primary mt-4 mb-4 col-md-6'}}) }}
+                    </div>
+                    {{ form_end(form_video) }}
 
-    <table class="col-md-12">
-        <tbody>
-        {% for video in videos %}
-            <tr>
-                <td><iframe width="420" height="200" src="{{ video.url }}"></iframe></td>
-                <td>{{ video.name }}</td>
-                <td>
-                    <a href="{{ path('video.delete', {'id': video.id}) }}"
-                       class="btn btn-danger"
-                       onclick="if(confirm('Are you sure ?')) {return true;} else {return false}">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+                    {% if videos|length > 0 %}
+                    <table id="videos" class="table col-md-12">
+                        <thead>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Active</th>
+                        <th>Action</th>
+                        </thead>
+                        <tbody>
+                        {% for video in videos %}
+                            <tr>
+                                <td>
+                                    <iframe width="420" height="200" src="{{ video.url }}"></iframe>
+                                </td>
+                                <td class="align-middle">{{ video.name }}</td>
+                                <td class="align-middle">
+                                    {% if video.active == 1 %}
+                                        <i style="font-size: 30px;" class="far fa-check-square text-success"></i>
+                                    {% else %}
+                                        <i style="font-size: 30px;" class="far fa-times-circle text-danger"></i>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    <button id="videoDelete_{{ video.id }}" class="btn btn-danger"
+                                            data-url="{{ path('video.delete', {'id': video.id}) }}">Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('click', '[id^="videoDelete_"]', function () {
+                sweetAlert('confirm', 'Are you sure?', $(this).data('url'))
+            });
+
+            function sweetAlert(type, message, dataUrl = null) {
+                switch (type) {
+                    case 'success' :
+                        swal({
+                            title: message,
+                            text: 'C\'est bon !',
+                            icon: type,
+                            button: false,
+                            timer: 1000
+                        });
+                        break;
+                    case 'confirm' :
+                        swal({
+                            icon: "error",
+                            title: message,
+                            dangerMode: true,
+                            confirm: true,
+                            buttons: [
+                                'Cancel',
+                                'Delete'
+                            ]
+                        })
+                            .then(function (e) {
+                                if (e === true) {
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: dataUrl,
+                                        success: function (data) {
+                                            if (data === 'ok') {
+                                                sweetAlert('success', 'Video supprimé !');
+                                                $("#videos").load(" #videos");
+                                            } else {
+                                                sweetAlert('danger', 'Une erreur est survenue !');
+                                            }
+                                        }
+                                    })
+                                }
+                            });
+                        break;
+                }
+            }
+        });
+    </script>
 {% endblock %}
