@@ -108,7 +108,7 @@ class AdminTrickController extends AbstractController
     /**
      * @Route("admin/trick/delete/{id}", name="trick.delete")
      * @param Trick $trick
-     * @return RedirectResponse
+     * @return void
      */
     public function delete(Trick $trick)
     {
@@ -128,9 +128,13 @@ class AdminTrickController extends AbstractController
             $entityManager->remove($image);
         }
 
+        foreach ($trick->getComments() as $comment) {
+            $entityManager->remove($comment);
+        }
+
         $entityManager->remove($trick);
         $entityManager->flush();
         $this->addFlash('success', 'Figure N°' . $trick->getId() . ' à été supprimé');
-        return $this->redirectToRoute('trick.index');
+        die('ok');
     }
 }
