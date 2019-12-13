@@ -60,6 +60,7 @@ class AdminVideoController extends AbstractController
         $entityManager->remove($video);
         $entityManager->flush();
         $this->addFlash('success', 'Vidéo supprimée');
-        die('ok');
+        echo 'ok';
+        exit;
     }
 }

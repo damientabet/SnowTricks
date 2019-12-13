@@ -110,6 +110,7 @@ class AdminTrickGroupController extends AbstractController
         $entityManager->remove($trickGroup);
         $entityManager->flush();
         $this->addFlash('success', 'Groupe N°' . $trickGroup->getId() . ' à été supprimé');
-        die('ok');
+        echo 'ok';
+        exit;
     }
 }
