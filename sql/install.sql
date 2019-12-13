@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS SnowTricks2;
+DROP DATABASE IF EXISTS SnowTricks;
 
-CREATE DATABASE SnowTricks2 CHARACTER SET 'utf8';
+CREATE DATABASE SnowTricks CHARACTER SET 'utf8';
 
-USE SnowTricks2;
+USE SnowTricks;
 
 --
 -- Base de données :  `SnowTricks`
