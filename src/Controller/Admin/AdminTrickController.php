@@ -135,6 +135,7 @@ class AdminTrickController extends AbstractController
         $entityManager->remove($trick);
         $entityManager->flush();
         $this->addFlash('success', 'Figure N°' . $trick->getId() . ' à été supprimé');
-        die('ok');
+        echo 'ok';
+        exit;
     }
 }
