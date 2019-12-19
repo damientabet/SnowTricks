@@ -27,15 +27,15 @@
             </div>
             <div class="col-md-6 p-3 shadow-lg">
                 {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <script>
-                        $(document).ready( function() {
+                    {% for message in messages %}
+                        <script>
+                            $(document).ready(function () {
 
-                            alert('Your Message');
+                                alert('Your Message');
 
-                        });
-                    </script>
-                {% endfor %}
+                            });
+                        </script>
+                    {% endfor %}
                 {% endfor %}
                 {% include 'includes/flashMessage.html.twig' %}
                 <div class="p-3">
@@ -54,18 +54,22 @@
                 {% endif %}
 
                 {% for comment in comments %}
-                    <div class="mb-3 p-4 bg-light row">
-                        <div class="col-11">
-                            {{ comment.content }}
+                    <div class="mb-3 pt-4 px-4 pb-1 bg-light">
+                        <div class="row pb-1">
+                            <div class="col-11">
+                                {{ comment.content }}
+                            </div>
+                            <div class="col-1">
+                                {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
+                                                class="fa fa-trash text-danger"></i></a>
+                                    <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
+                                                class="fa fa-edit text-warning"></i></a>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="col-1">
-                            {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
-                                            class="fa fa-trash text-danger"></i></a>
-                                <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
-                                            class="fa fa-edit text-warning"></i></a>
-                            {% endif %}
-                        </div>
+                        <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}
+                        </small>
                     </div>
                 {% endfor %}
             </div>
