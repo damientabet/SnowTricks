@@ -38,6 +38,14 @@ class AdminImageController extends AbstractController
                 $image->setName($imageFileName);
             }
 
+            if ($form_image['main_img']->getData()) {
+                foreach ($trick->getImages() as $trick_image) {
+                    if ($trick_image->getMainImg()) {
+                        $trick_image->setMainImg(0);
+                    }
+                }
+            }
+
             $image->setIdTrick($trick);
             $image->setCreatedAt(new \DateTime());
 
