@@ -18,7 +18,7 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
-public/images/
+/public/images/
 .idea
 !/.env
 /public/node_modules/

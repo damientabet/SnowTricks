@@ -1,0 +1,34 @@
+#load-media-btn {
+    display: none;
+}
+
+@media (max-width: 992px) {
+    #load-media-btn {
+        display: block;
+    }
+
+    #load-media-btn::before {
+        content: "Voir les médias";
+    }
+
+    #load-media-btn:hover {
+        cursor: pointer;
+    }
+
+    .hide-media {
+        display: none;
+    }
+
+    #loading-media:checked ~ .hide-media {
+        display: block;
+    }
+
+    #loading-media:checked ~ #load-media-btn::before {
+        content: "Cacher les médias";
+    }
+
+    #loading-media:checked ~ #load-media-btn {
+        background-color: #007bff;
+        color: white;
+    }
+}

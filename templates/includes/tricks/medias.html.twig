@@ -1,0 +1,36 @@
+<input type="checkbox" id="loading-media" name="load_media" class="d-none"/>
+<div class="card-deck hide-media" id="media">
+    {% for image in trick.images %}
+        {% if image.mainImg == 0 and image.active == 1 %}
+            <div class="card border-0">
+                <img class="card-img-top align-self-center" style="max-height: 200px;"
+                     src="/images/tricks/{{ image.name }}"
+                     alt=""/>
+                {% if "edit" in path(app.request.attributes.get('_route'),
+                    app.request.attributes.get('_route_params')) %}
+                    <div class="card-body align-self-center">
+                        <button type="button" class="btn text-danger shadow" id="imageDelete_{{ image.id }}" href="{{ path('image.delete', {'id': image.id}) }}"
+                           data-url="{{ path('image.delete', {'id': image.id}) }}"><i
+                                    class="fa fa-trash"></i></button>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% for video in trick.videos %}
+        <div class="card border-0">
+            <iframe class="card-img-top align-self-center" src="{{ video.url }}"></iframe>
+            {% if "edit" in path(app.request.attributes.get('_route'),
+                app.request.attributes.get('_route_params')) %}
+                <div class="card-body align-self-center">
+                    <button type="button" class="btn text-danger shadow" href="{{ path('video.delete', {'id': video.id}) }}"
+                       id="videoDelete_{{ video.id }}" data-url="{{ path('video.delete', {'id': video.id}) }}"><i
+                                class="fa fa-trash"></i></button>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<label for="loading-media" id="load-media-btn"
+       class="btn btn-outline-primary mt-4 col-md-12r"></label>

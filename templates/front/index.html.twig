@@ -19,7 +19,17 @@
                                     {% endif %}
                                 {% endfor %}
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ trick.name }}</h5>
+                                    <div class="clearfix">
+                                        <h5 class="card-title float-left">{{ trick.name }}</h5>
+                                        {% if app.user.id is defined and app.user.id == trick.idUser.id %}
+                                            <div class="float-right">
+                                                <a href="{{ path('trick.delete', {'id': trick.id}) }}"><i
+                                                            class="fa fa-trash text-danger"></i></a>
+                                                <a href="{{ path('trick.edit', {'id': trick.id}) }}"><i
+                                                            class="fa fa-edit text-warning"></i></a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -40,7 +50,17 @@
                                     {% endif %}
                                 {% endfor %}
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ trick.name }}</h5>
+                                    <div class="clearfix">
+                                        <h5 class="card-title float-left">{{ trick.name }}</h5>
+                                        {% if app.user.id is defined and app.user.id == trick.idUser.id or is_granted('ROLE_ADMIN')  %}
+                                            <div class="float-right">
+                                                <a href="{{ path('trick.delete', {'id': trick.id}) }}"><i
+                                                            class="fa fa-trash text-danger"></i></a>
+                                                <a href="{{ path('trick.edit', {'id': trick.id}) }}"><i
+                                                            class="fa fa-edit text-warning"></i></a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -48,6 +68,7 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <label for="loading" id="load-btn" class="btn btn-outline-primary mt-4 col-md-12 d-flex justify-content-center"></label>
+        <label for="loading" id="load-btn"
+               class="btn btn-outline-primary mt-4 col-md-12 d-flex justify-content-center"></label>
     </div>
 {% endblock %}

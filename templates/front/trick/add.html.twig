@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="d-flex justify-content-center vh-100 w-100" style="margin-top: 110px">
+        <div class="col-lg-9">
+            <div class="container text-center">
+                <h4>Ajouter une figure</h4>
+                {{ form_start(form) }}
+                <span class="m-2">{{ form_widget(form.name) }}</span>
+                <span class="m-2">{{ form_widget(form.description) }}</span>
+                <span class="m-2">{{ form_widget(form.id_trick_group) }}</span>
+                <span class="m-2">{{ form_widget(form.active) }}</span>
+                <input type="submit" class="btn btn-outline-primary col-md-6 mt-2" value="Ajouter">
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

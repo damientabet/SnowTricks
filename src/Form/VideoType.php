@@ -18,8 +18,16 @@ class VideoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('url', UrlType::class)
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Nom de la vidéo',
+                ]
+            ])
+            ->add('url', UrlType::class, [
+                'attr' => [
+                    'placeholder' => 'Url',
+                ]
+            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'YouTube' => 1,
@@ -27,9 +35,7 @@ class VideoType extends AbstractType
                 ]
             ])
             ->add('active', CheckboxType::class, ['required' => false])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Ajouter la vidéo'
-            ]);
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
