@@ -9,7 +9,7 @@
                 {% if "edit" in path(app.request.attributes.get('_route'),
                     app.request.attributes.get('_route_params')) %}
                     <div class="card-body align-self-center">
-                        <button type="button" class="btn text-danger shadow" id="imageDelete_{{ image.id }}" href="{{ path('image.delete', {'id': image.id}) }}"
+                        <button type="button" class="btn text-danger shadow" id="deleteMedia_{{ image.id }}" href="{{ path('image.delete', {'id': image.id}) }}"
                            data-url="{{ path('image.delete', {'id': image.id}) }}"><i
                                     class="fa fa-trash"></i></button>
                     </div>
@@ -24,7 +24,7 @@
                 app.request.attributes.get('_route_params')) %}
                 <div class="card-body align-self-center">
                     <button type="button" class="btn text-danger shadow" href="{{ path('video.delete', {'id': video.id}) }}"
-                       id="videoDelete_{{ video.id }}" data-url="{{ path('video.delete', {'id': video.id}) }}"><i
+                       id="deleteMedia_{{ video.id }}" data-url="{{ path('video.delete', {'id': video.id}) }}"><i
                                 class="fa fa-trash"></i></button>
                 </div>
             {% endif %}
