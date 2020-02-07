@@ -23,11 +23,11 @@
                 </a>
             </li>
             {% if app.user %}
-                {% if app.user.getRoles.0 == "ROLE_ADMIN" %}
+                {% if app.user is defined %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin.dashboard') }}">
-                            <i class="fa fa-user-cog"></i>
-                            Administration
+                        <a class="nav-link" href="{{ path('trick.add') }}">
+                            <i class="fa fa-plus"></i>
+                            Ajouter un trick
                         </a>
                     </li>
                 {% endif %}

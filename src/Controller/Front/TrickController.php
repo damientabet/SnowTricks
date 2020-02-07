@@ -5,9 +5,11 @@ namespace App\Controller\Front;
 use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Form\CommentType;
+use App\Form\TrickType;
 use App\Repository\UserRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,4 +64,37 @@ class TrickController extends AbstractController
             'comments' => $trick->getComments()
         ]);
     }
+
+    /**
+     * @Route("trick/add", name="trick.add")
+     * @param Request $request
+     * @return RedirectResponse|Response
+     * @throws Exception
+     */
+    public function add(Request $request)
+    {
+        $trick = new Trick();
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $trick->setIdUser($this->user);
+            $trick->setCreatedAt(new \DateTime());
+            $trick->setUpdatedAt(new \DateTime());
+
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Figure bien ajouté');
+
+            return $this->redirectToRoute('trick.edit', ['id' => $trick->getId()]);
+        }
+
+        return $this->render('front/trick/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
 }
