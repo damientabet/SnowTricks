@@ -8,7 +8,7 @@
     <img class="img-fluid" src="images/main.jpg" alt="">
     <div class="container mt-4">
         <div class="row" id="tricks">
-            {% for trick in tricks %}
+            {% for trick in first_tricks %}
                 {% if trick.active == 1 %}
                     <div class="col-md-3 mt-4">
                         <a href="{{ path('trick.show', {'id': trick.id, 'slug': trick.slug}) }}">
@@ -19,7 +19,17 @@
                                     {% endif %}
                                 {% endfor %}
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ trick.name }}</h5>
+                                    <div class="clearfix">
+                                        <h5 class="card-title float-left">{{ trick.name }}</h5>
+                                        {% if app.user.id is defined and app.user.id == trick.idUser.id %}
+                                            <div class="float-right">
+                                                <a href="{{ path('trick.delete', {'id': trick.id}) }}"><i
+                                                            class="fa fa-trash text-danger"></i></a>
+                                                <a href="{{ path('trick.edit', {'id': trick.id}) }}"><i
+                                                            class="fa fa-edit text-warning"></i></a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -27,5 +37,38 @@
                 {% endif %}
             {% endfor %}
         </div>
+        <input type="checkbox" id="loading" name="load_more" class="d-none">
+        <div class="row hide" id="tricks">
+            {% for trick in last_tricks %}
+                {% if trick.active == 1 %}
+                    <div class="col-md-3 mt-4">
+                        <a href="{{ path('trick.show', {'id': trick.id, 'slug': trick.slug}) }}">
+                            <div class="card shadow">
+                                {% for image in trick.images %}
+                                    {% if image.mainImg == 1 %}
+                                        <img src="/images/tricks/{{ image.name }}" class="card-img-top" alt="...">
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="card-body">
+                                    <div class="clearfix">
+                                        <h5 class="card-title float-left">{{ trick.name }}</h5>
+                                        {% if app.user.id is defined and app.user.id == trick.idUser.id or is_granted('ROLE_ADMIN')  %}
+                                            <div class="float-right">
+                                                <a href="{{ path('trick.delete', {'id': trick.id}) }}"><i
+                                                            class="fa fa-trash text-danger"></i></a>
+                                                <a href="{{ path('trick.edit', {'id': trick.id}) }}"><i
+                                                            class="fa fa-edit text-warning"></i></a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <label for="loading" id="load-btn"
+               class="btn btn-outline-primary mt-4 col-md-12 d-flex justify-content-center"></label>
     </div>
 {% endblock %}

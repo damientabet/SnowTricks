@@ -3,3 +3,28 @@
     height: 100vh;
     object-fit: cover;
 }
+
+#load-btn::before {
+    content: "Voir plus";
+}
+
+#load-btn:hover {
+    cursor: pointer;
+}
+
+.hide div {
+    display: none;
+}
+
+#loading:checked ~ .hide div {
+    display: block;
+}
+
+#loading:checked ~ #load-btn::before {
+    content: "Voir moins";
+}
+
+#loading:checked ~ #load-btn {
+    background-color: #007bff;
+    color: white;
+}
