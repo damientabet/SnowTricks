@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickType;
+use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Exception;
@@ -31,10 +32,11 @@ class TrickController extends AbstractController
      * @param Trick $trick
      * @param string $slug
      * @param Request $request
+     * @param CommentRepository $commentRepository
      * @return Response
      * @throws Exception
      */
-    public function show(Trick $trick, string $slug, Request $request)
+    public function show(Trick $trick, string $slug, Request $request, CommentRepository $commentRepository)
     {
         if ($trick->getSlug() !== $slug) {
             $this->redirectToRoute('trick.show', [
@@ -63,7 +65,8 @@ class TrickController extends AbstractController
         return $this->render('front/trick/show.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'comments' => $trick->getComments()
+            'first_comments' => $commentRepository->findFourComments($trick->getId()),
+            'last_comments' => $commentRepository->findLastComments($trick->getId())
         ]);
     }
 
