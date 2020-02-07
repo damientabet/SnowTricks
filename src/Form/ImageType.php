@@ -22,13 +22,9 @@ class ImageType extends AbstractType
             ])
             ->add('main_img', CheckboxType::class, [
                 'required' => false,
-                'label' => 'Main Image'
+                'label' => 'Image principale'
             ])
             ->add('active', CheckboxType::class, ['required' => false])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Ajouter',
-                'attr' => ['class' => 'btn btn-outline-primary col-md-6']
-            ])
         ;
     }
 

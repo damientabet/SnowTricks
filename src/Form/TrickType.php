@@ -19,10 +19,16 @@ class TrickType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
+                'attr' => [
+                    'placeholder' => 'Nom'
+                ]
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Description'
+                'label' => 'Description',
+                'attr' => [
+                    'placeholder' => 'Description'
+                ]
             ])
             ->add('id_trick_group', EntityType::class, [
                 'label' => 'Groupe',
@@ -30,13 +36,12 @@ class TrickType extends AbstractType
                 'choice_label' => function (TrickGroup $trickGroup) {
                     return $trickGroup->getName();
                 },
-                'placeholder' => 'Choose group'
+                'placeholder' => 'Choix de groupe'
             ])
             ->add('active', CheckboxType::class, [
                 'label' => 'Publier',
                 'required' => false
-            ])
-            ->add('submit', SubmitType::class, ['label' => 'Ajouter']);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
