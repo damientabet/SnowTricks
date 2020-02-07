@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Front;
 
 use App\Entity\Image;
 use App\Entity\Trick;
@@ -14,10 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminImageController extends AbstractController
+class ImageController extends AbstractController
 {
     /**
-     * @Route("admin/trick/{trick}/image/add", name="image.add")
+     * @Route("trick/{trick}/image/add", name="image.add")
      * @param Request $request
      * @param FileUploader $fileUploader
      * @param Trick $trick
@@ -57,7 +57,7 @@ class AdminImageController extends AbstractController
             return $this->redirectToRoute('image.add', ['trick' => $trick->getId()]);
         }
 
-        return $this->render('admin/trick/image.html.twig', [
+        return $this->render('front/trick/image.html.twig', [
             'trickId' => $trick->getId(),
             'images' => $trick->getImages(),
             'form_image' => $form_image->createView(),
@@ -65,7 +65,7 @@ class AdminImageController extends AbstractController
     }
 
     /**
-     * @Route("admin/trick/image/delete/{id}", name="image.delete")
+     * @Route("trick/image/delete/{id}", name="image.delete")
      * @param Image $image
      * @return string
      */

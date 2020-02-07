@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Front;
 
 use App\Entity\Trick;
 use App\Entity\Video;
@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminVideoController extends AbstractController
+class VideoController extends AbstractController
 {
     /**
-     * @Route("admin/trick/{trick}/video/add", name="video.add")
+     * @Route("trick/{trick}/video/add", name="video.add")
      * @param Request $request
      * @param Trick $trick
      * @return RedirectResponse|Response
@@ -41,7 +41,7 @@ class AdminVideoController extends AbstractController
             return $this->redirectToRoute('video.add', ['trick' => $trick->getId()]);
         }
 
-        return $this->render('admin/trick/video.html.twig', [
+        return $this->render('front/trick/video.html.twig', [
             'trickId' => $trick->getId(),
             'videos' => $trick->getVideos(),
             'form_video' => $form_video->createView(),
@@ -49,7 +49,7 @@ class AdminVideoController extends AbstractController
     }
 
     /**
-     * @Route("admin/trick/video/delete/{id}", name="video.delete")
+     * @Route("trick/video/delete/{id}", name="video.delete")
      * @param Video $video
      * @return void
      */
