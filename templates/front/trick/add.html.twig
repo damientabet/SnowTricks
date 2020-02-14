@@ -5,6 +5,7 @@
         <div class="col-lg-9">
             <div class="container text-center">
                 <h4>Ajouter une figure</h4>
+                {{ form_errors(form) }}
                 {{ form_start(form) }}
                 <span class="m-2">{{ form_widget(form.name) }}</span>
                 <span class="m-2">{{ form_widget(form.description) }}</span>

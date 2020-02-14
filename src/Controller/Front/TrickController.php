@@ -8,7 +8,6 @@ use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
-use App\Service\FileUploader;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -84,7 +83,6 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-
             $trick->setIdUser($this->user);
             $trick->setCreatedAt(new \DateTime());
             $trick->setUpdatedAt(new \DateTime());
@@ -106,17 +104,19 @@ class TrickController extends AbstractController
      * @Route("trick/edit/{id}", name="trick.edit")
      * @param Trick $trick
      * @param Request $request
-     * @param FileUploader $fileUploader
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function edit(Trick $trick, Request $request, FileUploader $fileUploader)
+    public function edit(Trick $trick, Request $request)
     {
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $trick->setUpdatedAt(new \DateTime());
+
             $entityManager->persist($trick);
             $entityManager->flush();
 
