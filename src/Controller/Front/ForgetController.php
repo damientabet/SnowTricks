@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Form\EmailResetPasswordType;
 use App\Form\ResetPasswordType;
 use App\Repository\UserRepository;
+use App\Service\Forget;
+use Doctrine\Persistence\ObjectManager;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,8 +31,7 @@ class ForgetController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $userRepository->findOneBy(['email' => $form->get('email')->getData()]);
-            if (!$user) {
+            if (!$user = $userRepository->findOneBy(['email' => $form->get('email')->getData()])) {
                 $this->addFlash('danger', 'Cette adresse mail ne correspond à aucun utilisateur');
                 $this->redirectToRoute('forget.passwd');
             }
@@ -58,13 +59,14 @@ class ForgetController extends AbstractController
      * })
      * @param string $email
      * @param string $username
-     * @param $token
+     * @param string $token
      * @param User $user
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Forget $forget
      * @return RedirectResponse|Response
      */
-    public function resetPassword(string $email, string $username, string $token, User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function resetPassword(string $email, string $username, string $token, User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder, Forget $forget)
     {
         if ($token !== $user->getSecureKey()) {
             return $this->redirectToRoute('login');
@@ -75,10 +77,9 @@ class ForgetController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
-            if ($data['password'] !== $data['password_confirm']) {
+            if(!$forget->checkIsSame($data)) {
                 $this->addFlash('danger', 'Les champs ne sont pas identiques');
-                return $this->redirectToRoute('reset.passwd',
-                    ['email' => $email, 'username' => $username, 'token' => $token]);
+                return $this->redirectToRoute('reset.passwd', ['email' => $email, 'username' => $username, 'token' => $token]);
             }
             $user->setPassword($passwordEncoder->encodePassword($user,$form->get('password')->getData()));
             $entityManager->persist($user);
