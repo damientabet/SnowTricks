@@ -5,15 +5,15 @@
         <div class="col-lg-9">
             <div class="container text-center">
                 <h4>Ajouter une vidéo</h4>
-                {{ form_start(form_video) }}
-                <div class="text-left">{{ form_widget(form_video.name) }}</div>
+                {{ form_start(formVideo) }}
+                <div class="text-left">{{ form_widget(formVideo.name) }}</div>
                 <div class="row p-3">
-                    <div class="col">{{ form_widget(form_video.url) }}</div>
-                    <div class="col">{{ form_widget(form_video.type) }}</div>
-                    <div class="col">{{ form_widget(form_video.active) }}</div>
+                    <div class="col">{{ form_widget(formVideo.url) }}</div>
+                    <div class="col">{{ form_widget(formVideo.type) }}</div>
+                    <div class="col">{{ form_widget(formVideo.active) }}</div>
                 </div>
                 <input type="submit" class="btn btn-outline-primary col-md-6" value="Ajouter">
-                {{ form_end(form_video) }}
+                {{ form_end(formVideo) }}
             </div>
         </div>
     </div>

@@ -12,7 +12,7 @@
     <hr/>
 {% endif %}
 
-                {% for comment in first_comments %}
+                {% for comment in firstComments %}
                     <div class="mb-3 pt-4 px-4 pb-1 bg-light">
                         <div class="row pb-1">
                             <div class="clearfix container">
@@ -29,31 +29,29 @@
                                 </div>
                             </div>
                         </div>
-                        <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}
-                        </small>
+                        <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}</small>
                     </div>
                 {% endfor %}
 <input type="checkbox" id="loading" name="load_more" class="d-none">
 <div class="hide" id="tricks">
-    {% for comment in last_comments %}
+    {% for comment in lastComments %}
         <div class="mb-3 pt-4 px-4 pb-1 bg-light">
             <div class="row pb-1">
                 <div class="clearfix container">
                     <div class="float-left">
                         {{ comment.content }}
                     </div>
-                    {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
-                        <div class="float-right">
-                            <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
-                                        class="fa fa-trash text-danger"></i></a>
-                            <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
-                                        class="fa fa-edit text-warning"></i></a>
-                        </div>
-                    {% endif %}
+{#                    {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}#}
+{#                        <div class="float-right">#}
+{#                            <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i#}
+{#                                        class="fa fa-trash text-danger"></i></a>#}
+{#                            <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i#}
+{#                                        class="fa fa-edit text-warning"></i></a>#}
+{#                        </div>#}
+{#                    {% endif %}#}
                 </div>
             </div>
-            <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}
-            </small>
+            <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}</small>
         </div>
     {% endfor %}
 </div>

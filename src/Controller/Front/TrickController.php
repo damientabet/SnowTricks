@@ -53,7 +53,6 @@ class TrickController extends AbstractController
 
             $comment->setIdTrick($trick);
             $comment->setIdUser($this->user);
-            $comment->setCreatedAt(new \DateTime());
 
             $entityManager->persist($comment);
             $entityManager->flush();
@@ -64,8 +63,8 @@ class TrickController extends AbstractController
         return $this->render('front/trick/show.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'first_comments' => $commentRepository->findFourComments($trick->getId()),
-            'last_comments' => $commentRepository->findLastComments($trick->getId())
+            'firstComments' => $commentRepository->findFourComments($trick->getId()),
+            'lastComments' => $commentRepository->findLastComments($trick->getId())
         ]);
     }
 

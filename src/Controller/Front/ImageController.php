@@ -60,7 +60,7 @@ class ImageController extends AbstractController
         return $this->render('front/trick/image.html.twig', [
             'trickId' => $trick->getId(),
             'images' => $trick->getImages(),
-            'form_image' => $form_image->createView(),
+            'formImage' => $form_image->createView(),
         ]);
     }
 

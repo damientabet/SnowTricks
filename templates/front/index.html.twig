@@ -8,7 +8,7 @@
     <img class="img-fluid" src="images/main.jpg" alt="">
     <div class="container mt-4">
         <div class="row" id="tricks">
-            {% for trick in first_tricks %}
+            {% for trick in firstTricks %}
                 {% if trick.active == 1 %}
                     <div class="col-md-3 mt-4">
                         <a href="{{ path('trick.show', {'id': trick.id, 'slug': trick.slug}) }}">
@@ -39,7 +39,7 @@
         </div>
         <input type="checkbox" id="loading" name="load_more" class="d-none">
         <div class="row hide" id="tricks">
-            {% for trick in last_tricks %}
+            {% for trick in lastTricks %}
                 {% if trick.active == 1 %}
                     <div class="col-md-3 mt-4">
                         <a href="{{ path('trick.show', {'id': trick.id, 'slug': trick.slug}) }}">

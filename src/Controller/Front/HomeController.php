@@ -16,11 +16,11 @@ class HomeController extends AbstractController
      */
     public function index(TrickRepository $trickRepository)
     {
-        $first_tricks = $trickRepository->findFourArticles();
-        $last_tricks = $trickRepository->findLastArticles();
+        $firstTricks = $trickRepository->findFourArticles();
+        $lastTricks = $trickRepository->findLastArticles();
         return $this->render('front/index.html.twig', [
-            'first_tricks' => $first_tricks,
-            'last_tricks' => $last_tricks
+            'firstTricks' => $firstTricks,
+            'lastTricks' => $lastTricks
         ]);
     }
 }
