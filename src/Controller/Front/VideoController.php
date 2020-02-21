@@ -44,7 +44,7 @@ class VideoController extends AbstractController
         return $this->render('front/trick/video.html.twig', [
             'trickId' => $trick->getId(),
             'videos' => $trick->getVideos(),
-            'form_video' => $form_video->createView(),
+            'formVideo' => $form_video->createView(),
         ]);
     }
 
