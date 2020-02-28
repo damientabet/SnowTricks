@@ -12,27 +12,28 @@
     <hr/>
 {% endif %}
 
-                {% for comment in firstComments %}
-                    <div class="mb-3 pt-4 px-4 pb-1 bg-light">
-                        <div class="row pb-1">
-                            <div class="clearfix container">
-                                <div class="float-left">
-                                    {{ comment.content }}
-                                </div>
-                                <div class="float-right">
-                                    {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
-                                        <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
-                                                    class="fa fa-trash text-danger"></i></a>
-                                        <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
-                                                    class="fa fa-edit text-warning"></i></a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}</small>
-                    </div>
-                {% endfor %}
+{% for comment in firstComments %}
+    <div class="mb-3 pt-4 px-4 pb-1 bg-light">
+        <div class="row pb-1">
+            <div class="clearfix container">
+                <div class="float-left">
+                    {{ comment.content }}
+                </div>
+                <div class="float-right">
+                    {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
+                                    class="fa fa-trash text-danger"></i></a>
+                        <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
+                                    class="fa fa-edit text-warning"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}</small>
+    </div>
+{% endfor %}
 <input type="checkbox" id="loading" name="load_more" class="d-none">
+{% if lastComments %}
 <div class="hide" id="tricks">
     {% for comment in lastComments %}
         <div class="mb-3 pt-4 px-4 pb-1 bg-light">
@@ -41,14 +42,14 @@
                     <div class="float-left">
                         {{ comment.content }}
                     </div>
-{#                    {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}#}
-{#                        <div class="float-right">#}
-{#                            <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i#}
-{#                                        class="fa fa-trash text-danger"></i></a>#}
-{#                            <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i#}
-{#                                        class="fa fa-edit text-warning"></i></a>#}
-{#                        </div>#}
-{#                    {% endif %}#}
+                    {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
+                        <div class="float-right">
+                            <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
+                                        class="fa fa-trash text-danger"></i></a>
+                            <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
+                                        class="fa fa-edit text-warning"></i></a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <small><strong>{{ comment.idUser.pseudo }}</strong> - {{ comment.createdAt|date('d/m/Y') }}</small>
@@ -58,3 +59,4 @@
 
 <label for="loading" id="load-btn"
        class="btn btn-outline-primary mt-4 col-md-12 d-flex justify-content-center"></label>
+{% endif %}
