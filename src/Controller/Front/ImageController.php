@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\ImageType;
 use App\Service\FileUploader;
+use App\Service\ImageService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -17,44 +18,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class ImageController extends AbstractController
 {
     /**
+     * @var ImageService
+     */
+    private $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
+    /**
      * @Route("trick/{trick}/image/add", name="image.add")
      * @param Request $request
-     * @param FileUploader $fileUploader
      * @param Trick $trick
      * @return RedirectResponse|Response
-     * @throws Exception
      */
-    public function add(Request $request, FileUploader $fileUploader, Trick $trick)
+    public function add(Request $request, Trick $trick)
     {
         $image = new Image();
         $form_image = $this->createForm(ImageType::class, $image);
         $form_image->handleRequest($request);
 
         if ($form_image->isSubmitted() && $form_image->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $imageFile = $form_image['name']->getData();
-            if ($imageFile) {
-                $imageFileName = $fileUploader->upload($imageFile);
-                $image->setName($imageFileName);
-            }
-
-            if ($form_image['main_img']->getData()) {
-                foreach ($trick->getImages() as $trick_image) {
-                    if ($trick_image->getMainImg()) {
-                        $trick_image->setMainImg(0);
-                    }
-                }
-            }
-
-            $image->setIdTrick($trick);
-            $image->setCreatedAt(new \DateTime());
-
-            $entityManager->persist($image);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Image ajoutée');
-
-            return $this->redirectToRoute('image.add', ['trick' => $trick->getId()]);
+            $mainImage = $form_image['main_img']->getData();
+            $this->imageService->addImage($image, $trick, $imageFile, $mainImage);
         }
 
         return $this->render('front/trick/image.html.twig', [
@@ -71,16 +59,7 @@ class ImageController extends AbstractController
      */
     public function delete(Image $image)
     {
-        $filesystem = new Filesystem();
-        $entityManager = $this->getDoctrine()->getManager();
-        $imagePath = 'images/tricks/'.$image->getName();
-
-        if ($filesystem->exists($imagePath)) {
-            $filesystem->remove($imagePath);
-        }
-        $entityManager->remove($image);
-        $entityManager->flush();
-        $this->addFlash('success', 'Image supprimée');
+        $this->imageService->deleteImage($image);
         echo 'ok';
         exit;
     }

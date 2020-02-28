@@ -5,7 +5,7 @@ namespace App\Controller\Front;
 use App\Entity\Trick;
 use App\Entity\Video;
 use App\Form\VideoType;
-use Exception;
+use App\Service\VideoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class VideoController extends AbstractController
 {
     /**
+     * @var VideoService
+     */
+    private $videoService;
+
+    public function __construct(VideoService $videoService)
+    {
+        $this->videoService = $videoService;
+    }
+
+    /**
      * @Route("trick/{trick}/video/add", name="video.add")
      * @param Request $request
      * @param Trick $trick
      * @return RedirectResponse|Response
-     * @throws Exception
      */
     public function add(Request $request, Trick $trick)
     {
@@ -28,17 +37,7 @@ class VideoController extends AbstractController
         $form_video->handleRequest($request);
 
         if ($form_video->isSubmitted() && $form_video->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $video->setIdTrick($trick);
-            $video->setCreatedAt(new \DateTime());
-
-            $entityManager->persist($video);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Vidéo ajoutée');
-
-            return $this->redirectToRoute('video.add', ['trick' => $trick->getId()]);
+            $this->videoService->addVideo($video, $trick);
         }
 
         return $this->render('front/trick/video.html.twig', [
@@ -55,11 +54,7 @@ class VideoController extends AbstractController
      */
     public function delete(Video $video)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $entityManager->remove($video);
-        $entityManager->flush();
-        $this->addFlash('success', 'Vidéo supprimée');
+        $this->videoService->deleteVideo($video);
         echo 'ok';
         exit;
     }

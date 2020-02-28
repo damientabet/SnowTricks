@@ -7,23 +7,25 @@ use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\CommentRepository;
-use App\Repository\UserRepository;
+use App\Service\CommentService;
+use App\Service\TrickService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class TrickController extends AbstractController
 {
-    public $user;
+    /**
+     * @var TrickService
+     */
+    private $trickService;
 
-    public function __construct(AuthenticationUtils $authenticationUtils, UserRepository $userRepository)
+    public function __construct(TrickService $trickService)
     {
-        $this->user = $userRepository->findOneBy(['email' => $authenticationUtils->getLastUsername()]);
+        $this->trickService = $trickService;
     }
 
     /**
@@ -32,10 +34,10 @@ class TrickController extends AbstractController
      * @param string $slug
      * @param Request $request
      * @param CommentRepository $commentRepository
+     * @param CommentService $commentService
      * @return Response
-     * @throws Exception
      */
-    public function show(Trick $trick, string $slug, Request $request, CommentRepository $commentRepository)
+    public function show(Trick $trick, string $slug, Request $request, CommentRepository $commentRepository, CommentService $commentService)
     {
         if ($trick->getSlug() !== $slug) {
             $this->redirectToRoute('trick.show', [
@@ -49,15 +51,7 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $comment->setIdTrick($trick);
-            $comment->setIdUser($this->user);
-
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
+            $commentService->addComment($comment, $trick);
         }
 
         return $this->render('front/trick/show.html.twig', [
@@ -81,17 +75,7 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $trick->setIdUser($this->user);
-            $trick->setCreatedAt(new \DateTime());
-            $trick->setUpdatedAt(new \DateTime());
-
-            $entityManager->persist($trick);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Figure bien ajouté');
-
-            return $this->redirectToRoute('trick.edit', ['id' => $trick->getId()]);
+            $this->trickService->addTrick($trick);
         }
 
         return $this->render('front/trick/add.html.twig', [
@@ -112,18 +96,8 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $trick->setUpdatedAt(new \DateTime());
-
-            $entityManager->persist($trick);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Figure N°' . $trick->getId() . ' modifiée');
-
-            return $this->redirectToRoute('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug()]);
+            $this->trickService->editTrick($trick);
         }
-
         return $this->render('front/trick/edit.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
@@ -133,34 +107,10 @@ class TrickController extends AbstractController
     /**
      * @Route("trick/delete/{id}", name="trick.delete")
      * @param Trick $trick
-     * @return RedirectResponse
+     * @return void
      */
     public function delete(Trick $trick)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        foreach ($trick->getVideos() as $video) {
-            $entityManager->remove($video);
-        }
-
-        foreach ($trick->getImages() as $image) {
-            $filesystem = new Filesystem();
-            $imagePath = 'images/tricks/'.$image->getName();
-
-            if ($filesystem->exists($imagePath)) {
-                $filesystem->remove($imagePath);
-            }
-            $entityManager->remove($image);
-        }
-
-        foreach ($trick->getComments() as $comment) {
-            $entityManager->remove($comment);
-        }
-
-        $entityManager->remove($trick);
-        $entityManager->flush();
-        $this->addFlash('success', 'Figure N°' . $trick->getId() . ' à été supprimé');
-
-        return $this->redirectToRoute('home');
+        $this->trickService->deleteTrick($trick);
     }
 }
