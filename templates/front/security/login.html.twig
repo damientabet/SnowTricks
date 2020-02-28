@@ -11,6 +11,7 @@
                 {% endif %}
 
                 <h1 class="text-center mb-3">Connexion</h1>
+                {{ include('includes/flashMessage.html.twig') }}
                 <label for="inputEmail">Adresse email</label>
                 <input type="email" value="{{ lastUsername }}" name="email" id="inputEmail"
                        class="form-control mb-3 rounded-0 p-4"
