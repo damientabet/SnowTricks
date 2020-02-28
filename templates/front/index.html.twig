@@ -7,6 +7,7 @@
 {% block body %}
     <img class="img-fluid" src="images/main.jpg" alt="">
     <div class="container mt-4">
+        {{ include('includes/flashMessage.html.twig') }}
         <div class="row" id="tricks">
             {% for trick in firstTricks %}
                 {% if trick.active == 1 %}
@@ -38,6 +39,7 @@
             {% endfor %}
         </div>
         <input type="checkbox" id="loading" name="load_more" class="d-none">
+        {% if lastTricks %}
         <div class="row hide" id="tricks">
             {% for trick in lastTricks %}
                 {% if trick.active == 1 %}
@@ -70,5 +72,6 @@
         </div>
         <label for="loading" id="load-btn"
                class="btn btn-outline-primary mt-4 col-md-12 d-flex justify-content-center"></label>
+        {% endif %}
     </div>
 {% endblock %}

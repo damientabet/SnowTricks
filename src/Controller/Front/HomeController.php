@@ -16,11 +16,9 @@ class HomeController extends AbstractController
      */
     public function index(TrickRepository $trickRepository)
     {
-        $firstTricks = $trickRepository->findFourArticles();
-        $lastTricks = $trickRepository->findLastArticles();
         return $this->render('front/index.html.twig', [
-            'firstTricks' => $firstTricks,
-            'lastTricks' => $lastTricks
+            'firstTricks' => $trickRepository->findFourArticles(),
+            'lastTricks' => $trickRepository->findLastArticles()
         ]);
     }
 }
