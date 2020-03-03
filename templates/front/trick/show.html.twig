@@ -24,7 +24,7 @@
             <div class="container">
                 {% include 'includes/flashMessage.html.twig' %}
                 {% if app.user.id is defined and app.user.id == trick.idUser.id or is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('trick.delete', {'id': trick.id}) }}"><i
+                    <a class="delete" href="{{ path('trick.delete', {'id': trick.id}) }}"><i
                                 class="fa fa-trash btn text-danger shadow"></i></a>
                     <a href="{{ path('trick.edit', {'id': trick.id}) }}"><i
                                 class="fa fa-edit text-warning btn shadow"></i></a>
@@ -41,4 +41,8 @@
         </div>
     </div>
     <hr/>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/tricks.js') }}"></script>
 {% endblock %}
