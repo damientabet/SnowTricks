@@ -39,12 +39,7 @@ class TrickController extends AbstractController
      */
     public function show(Trick $trick, string $slug, Request $request, CommentRepository $commentRepository, CommentService $commentService)
     {
-        if ($trick->getSlug() !== $slug) {
-            $this->redirectToRoute('trick.show', [
-                'id' => $trick->getId(),
-                'slug' => $trick->getSlug(),
-            ], 301);
-        }
+        $this->trickService->checkSlug($trick, $slug);
 
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);

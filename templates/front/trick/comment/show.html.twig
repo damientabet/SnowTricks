@@ -21,7 +21,7 @@
                 </div>
                 <div class="float-right">
                     {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
+                        <a class="delete" href="{{ path('comment.delete', {'id': comment.id}) }}"><i
                                     class="fa fa-trash text-danger"></i></a>
                         <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
                                     class="fa fa-edit text-warning"></i></a>
@@ -44,7 +44,7 @@
                     </div>
                     {% if (app.user.id is defined and comment.idUser.id == app.user.id) or is_granted('ROLE_ADMIN') %}
                         <div class="float-right">
-                            <a href="{{ path('comment.delete', {'id': comment.id}) }}"><i
+                            <a class="delete" href="{{ path('comment.delete', {'id': comment.id}) }}"><i
                                         class="fa fa-trash text-danger"></i></a>
                             <a href="{{ path('comment.edit', {'id': comment.id}) }}"><i
                                         class="fa fa-edit text-warning"></i></a>

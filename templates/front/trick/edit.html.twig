@@ -48,7 +48,7 @@
                 <div class="clearfix">
                     <div class="float-left">
                         {% if app.user.id is defined %}
-                            <a class="btn btn-danger" href="{{ path('trick.delete', {'id': trick.id}) }}"><i
+                            <a class="btn btn-danger delete" href="{{ path('trick.delete', {'id': trick.id}) }}"><i
                                         class="fa fa-trash"></i> Supprimer</a>
                         {% endif %}
                         <input class="btn btn-primary" type="submit" value="Enregistrer">

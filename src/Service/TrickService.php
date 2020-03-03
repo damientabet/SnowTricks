@@ -111,4 +111,12 @@ class TrickService
         $response = new RedirectResponse($this->router->generate('home'));
         return $response->send();
     }
+
+    public function checkSlug(Trick $trick, $slug)
+    {
+        if ($trick->getSlug() !== $slug) {
+            $response = new RedirectResponse($this->router->generate('trick.show', ['id' => $trick->getId(), 'slug' => $trick->getSlug(),]));
+            return $response->send();
+        }
+    }
 }

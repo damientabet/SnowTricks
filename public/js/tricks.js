@@ -3,6 +3,10 @@ $(document).ready(function () {
         sweetAlert('confirm', "Voulez-vous vraiment supprimer l'élément ?", $(this).data('url'))
     });
 
+    $('.delete').on('click', function () {
+        return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');
+    });
+
     $('#image_name').on('change', function () {
         var filename = this.files[0].name;
         $('.custom-file-label').text(filename);
