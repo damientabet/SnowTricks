@@ -22,7 +22,9 @@ class RegistrationFormType extends AbstractType
             ->add('pseudo', TextType::class, ['label' => 'Pseudo'])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
-                new NotBlank(['message' => 'Veuillez renseigner une adresse mail']),
+                'constraints' => [
+                    new NotBlank(['message' => 'Please enter a password']),
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
